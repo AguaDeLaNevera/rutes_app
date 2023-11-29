@@ -7,7 +7,6 @@ void main() {
   runApp(
     ChangeNotifierProvider(create: (context) => Information(), child: MyApp()),
   );
-  Information().InfoProvider();
 }
 
 class MyApp extends StatelessWidget {

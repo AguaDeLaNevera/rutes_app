@@ -10,7 +10,6 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Information info = Provider.of<Information>(context);
     List<Product> productes = info.llistaProductes;
-    final missatge = ModalRoute.of(context)!.settings.arguments as String;
 
     return Scaffold(
       appBar: AppBar(
@@ -20,49 +19,98 @@ class HomeScreen extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.logout),
             onPressed: () {
-              // TODO: Logout
               Navigator.of(context).pushReplacementNamed('logOrReg');
             },
           )
         ],
       ),
       body: ListView.builder(
-        itemCount: productes.length, // Number of items in the list
+        itemCount: productes.length,
         itemBuilder: (context, index) {
-          return Column(
+          return Row(
             children: [
-              Image.network(productes[index].image),
-              Container(
-                width: 80,
-                height: 80,
-                color: Colors.grey, // Placeholder color
-              ),
-              // Price
-              Text('Price: \$20.00'),
-              // Buttons (Remove and Add)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      // TODO: Remove action
-                    },
-                    child: Text('Remove'),
-                  ),
-                  SizedBox(width: 8), // Add some spacing between buttons
-                  ElevatedButton(
-                    onPressed: () {
-                      // TODO: Add action
-                    },
-                    child: Text('Add'),
-                  ),
-                ],
-              ),
-              SizedBox(height: 16), // Add some spacing between items
+              buildProductColumn(productes[index], info),
+              SizedBox(width: 80), // Add some spacing between columns
+              buildCartColumn(productes[index]),
             ],
           );
         },
       ),
+    );
+  }
+
+  Widget buildProductColumn(Product product, Information info) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 20.0),
+          child: Image.network(
+            product.image,
+            width: 80,
+            height: 80,
+            fit: BoxFit.cover,
+          ),
+        ),
+        Padding(padding: const EdgeInsets.only(left: 46.0), child: Text('${product.price}€')),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    info.cartProvider.addToCart(product.price);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.all(4),
+                  ),
+                  child: Icon(Icons.add, size: 12),
+                ),
+                SizedBox(height: 4),
+              ],
+            ),
+            SizedBox(width: 8),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    info.cartProvider.removeFromCart(product.price);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.all(4),
+                  ),
+                  child: Icon(Icons.remove, size: 12),
+                ),
+                SizedBox(height: 4),
+              ],
+            ),
+          ],
+        ),
+        SizedBox(height: 16),
+      ],
+    );
+  }
+
+  Widget buildCartColumn(Product product) {
+    return Consumer<Information>(
+      builder: (context, info, child) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Image.network(
+            product.image,
+            width: 80,
+            height: 80,
+            fit: BoxFit.cover,
+          ),
+            Text('${info.cartProvider.sumaTotal}€'),
+            SizedBox(height: 16),
+          ],
+        );
+      },
     );
   }
 }
