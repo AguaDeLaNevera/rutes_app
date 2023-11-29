@@ -3,13 +3,21 @@ import 'package:plantilla_login_register/models/product.dart';
 import 'package:plantilla_login_register/providers/provider.dart';
 import 'package:provider/provider.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  double sumaTotal = 0;
+  List<int> productList = [0, 0, 0, 0, 0];
   @override
   Widget build(BuildContext context) {
     Information info = Provider.of<Information>(context);
     List<Product> productes = info.llistaProductes;
+    final missatge = ModalRoute.of(context)!.settings.arguments as String;
 
     return Scaffold(
       appBar: AppBar(
@@ -21,7 +29,7 @@ class HomeScreen extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).pushReplacementNamed('logOrReg');
             },
-          )
+          ),
         ],
       ),
       body: ListView.builder(
@@ -29,9 +37,9 @@ class HomeScreen extends StatelessWidget {
         itemBuilder: (context, index) {
           return Row(
             children: [
-              buildProductColumn(productes[index], info),
-              SizedBox(width: 80), // Add some spacing between columns
-              buildCartColumn(productes[index]),
+              buildProductColumn(productes[index], productList, index),
+              SizedBox(width: 80),
+              buildCartColumn(productes[index], productList, index),
             ],
           );
         },
@@ -39,7 +47,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget buildProductColumn(Product product, Information info) {
+  Widget buildProductColumn(Product product, List<int> productList, int index) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -52,7 +60,10 @@ class HomeScreen extends StatelessWidget {
             fit: BoxFit.cover,
           ),
         ),
-        Padding(padding: const EdgeInsets.only(left: 46.0), child: Text('${product.price}€')),
+        Padding(
+          padding: const EdgeInsets.only(left: 46.0),
+          child: Text('${product.price}€'),
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -61,7 +72,10 @@ class HomeScreen extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    info.cartProvider.addToCart(product.price);
+                    setState(() {
+                      productList[index] = product.price + productList[index];
+                      sumaTotal = sumaTotal + product.price;
+                    });
                   },
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.all(4),
@@ -77,7 +91,16 @@ class HomeScreen extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    info.cartProvider.removeFromCart(product.price);
+                    setState(() {
+                      productList[index] = productList[index] - product.price;
+                      sumaTotal = sumaTotal - product.price;
+                      if(sumaTotal < 0){
+                        sumaTotal = 0;
+                      }
+                      if(productList[index] < 0){
+                        productList[index] = 0;
+                      }
+                    });
                   },
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.all(4),
@@ -94,23 +117,50 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget buildCartColumn(Product product) {
-    return Consumer<Information>(
-      builder: (context, info, child) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Image.network(
-            product.image,
-            width: 80,
-            height: 80,
-            fit: BoxFit.cover,
+Widget buildCartColumn(Product product, List<int> productList, int index) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Padding(
+        padding: const EdgeInsets.only(left: 20.0),
+        child: Image.network(
+          product.image,
+          width: 80,
+          height: 80,
+          fit: BoxFit.cover,
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.only(left: 46.0),
+        child: Text('${product.price}€'),
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Display the partial sum for each product.
+              Text('Partial Sum: ${productList[index]}€'),
+            ],
           ),
-            Text('${info.cartProvider.sumaTotal}€'),
-            SizedBox(height: 16),
-          ],
-        );
-      },
-    );
-  }
+          SizedBox(width: 8),
+        ],
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+        Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Display the total sum.
+              Text('Total: ${sumaTotal}€'),
+            ],
+          ),],),
+      SizedBox(height: 16),
+    ],
+  );
+}
+
+
 }

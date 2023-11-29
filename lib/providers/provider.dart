@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:plantilla_login_register/models/product.dart';
-import 'package:plantilla_login_register/providers/card_provider.dart';
 
 class Information extends ChangeNotifier {
   final String _baseUrl =
@@ -28,7 +27,4 @@ class Information extends ChangeNotifier {
     }
     print(llistaProductes);
   }
-  CartProvider _cartProvider = CartProvider();
-
-  CartProvider get cartProvider => _cartProvider;
 }
