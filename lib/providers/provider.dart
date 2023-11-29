@@ -5,7 +5,7 @@ import 'package:plantilla_login_register/models/product.dart';
 
 
 class Information extends ChangeNotifier{
-  final String _baseUrl = 'https://api-tenda-7058f-default-rtdb.europe-west1.firebasedatabase.app';
+  final String _baseUrl = 'api-tenda-7058f-default-rtdb.europe-west1.firebasedatabase.app';
 
   List<Product> llistaProductes = [];
 
@@ -18,13 +18,12 @@ class Information extends ChangeNotifier{
     var url = Uri.https(_baseUrl, '/products.json');
     final result = await http.get(url);
     var jsonResponse = convert.jsonDecode(result.body);
-    print(jsonResponse);
     if (jsonResponse is List) {
       for (var Producte in jsonResponse) {
-        llistaProductes.add(Producte);
+        Product a = Product.fromMap(Producte);
+        llistaProductes.add(a);
       }
-      notifyListeners();
     }
-    print(llistaProductes);
+    notifyListeners();
   }
 }
