@@ -3,9 +3,9 @@ import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:plantilla_login_register/models/product.dart';
 
-
-class Information extends ChangeNotifier{
-  final String _baseUrl = 'api-tenda-7058f-default-rtdb.europe-west1.firebasedatabase.app';
+class Information extends ChangeNotifier {
+  final String _baseUrl =
+      'api-tenda-7058f-default-rtdb.europe-west1.firebasedatabase.app';
 
   List<Product> llistaProductes = [];
 
@@ -23,7 +23,8 @@ class Information extends ChangeNotifier{
         Product a = Product.fromMap(Producte);
         llistaProductes.add(a);
       }
+      notifyListeners();
     }
-    notifyListeners();
+    print(llistaProductes);
   }
 }

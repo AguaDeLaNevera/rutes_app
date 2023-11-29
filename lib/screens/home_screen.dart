@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:plantilla_login_register/models/product.dart';
+import 'package:plantilla_login_register/providers/provider.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    Information info = Provider.of<Information>(context);
+    List<Product> productes = info.llistaProductes;
     final missatge = ModalRoute.of(context)!.settings.arguments as String;
 
     return Scaffold(
@@ -22,11 +27,11 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       body: ListView.builder(
-        itemCount: 5, // Number of items in the list
+        itemCount: productes.length, // Number of items in the list
         itemBuilder: (context, index) {
           return Column(
             children: [
-              // Image Placeholder
+              Image.network(productes[index].image),
               Container(
                 width: 80,
                 height: 80,
