@@ -21,31 +21,42 @@ class HomeScreen extends StatelessWidget {
           )
         ],
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                missatge,
-                style: TextStyle(
-                  fontSize: 32.0,
-                  fontStyle: FontStyle.italic,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
+      body: ListView.builder(
+        itemCount: 5, // Number of items in the list
+        itemBuilder: (context, index) {
+          return Column(
+            children: [
+              // Image Placeholder
+              Container(
+                width: 80,
+                height: 80,
+                color: Colors.grey, // Placeholder color
               ),
+              // Price
+              Text('Price: \$20.00'),
+              // Buttons (Remove and Add)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      // TODO: Remove action
+                    },
+                    child: Text('Remove'),
+                  ),
+                  SizedBox(width: 8), // Add some spacing between buttons
+                  ElevatedButton(
+                    onPressed: () {
+                      // TODO: Add action
+                    },
+                    child: Text('Add'),
+                  ),
+                ],
+              ),
+              SizedBox(height: 16), // Add some spacing between items
             ],
-          )
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Acció quan es polsa el botó d'afegir
+          );
         },
-        backgroundColor: Colors.green,
-        child: const Icon(Icons.add),
       ),
     );
   }
