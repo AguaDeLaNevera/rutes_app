@@ -10,14 +10,6 @@ class Product {
         required this.price,
     });
 
-      factory Product.fromJson(Map<String, dynamic> json) => Product(
-        image: json["image"],
-        price: json["price"],
-      );
-
-
-    String toJson() => json.encode(toMap());
-
     factory Product.fromMap(Map<String, dynamic> json) => Product(
         image: json["image"],
         price: json["price"],
