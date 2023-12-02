@@ -74,7 +74,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ElevatedButton(
                   onPressed: () {
                     info.suma(index, product.price);
-                    info.sumaResultat(productList);
                   },
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.all(4),
@@ -91,7 +90,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ElevatedButton(
                   onPressed: () {
                     info.resta(index, product.price);
-                    info.sumaResultat(productList);
                   },
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.all(4),

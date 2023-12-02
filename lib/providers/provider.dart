@@ -32,20 +32,25 @@ class Information extends ChangeNotifier {
 
   void suma(int index, int preu) {
     llistaCart[index] = llistaCart[index] + preu;
+    sumaTotal = sumaTotal + preu;
     notifyListeners();
   }
 
   void resta(int index, int preu) {
-    llistaCart[index] = llistaCart[index] - preu;
-    notifyListeners();
-  }
+    if (index >= 0 && index < llistaCart.length) {
+        if (llistaCart[index] >= preu) {
+            llistaCart[index] -= preu;
+            sumaTotal -= preu;
+        } else {
+            sumaTotal -= llistaCart[index];
+            llistaCart[index] = 0;
+        }
 
-  void sumaResultat(List<int> llistaCart) {
-    int suma = 0;
-    for (int i in llistaCart) {
-      suma = llistaCart[i] + suma;
+        if (sumaTotal < 0) {
+            sumaTotal = 0;
+        }
+
+        notifyListeners();
     }
-    sumaTotal = suma;
-    notifyListeners();
   }
 }
