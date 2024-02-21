@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:plantilla_login_register/models/product.dart';
-import 'package:plantilla_login_register/providers/provider.dart';
 
 class LoginOrRegisterScreen extends StatefulWidget {
   @override

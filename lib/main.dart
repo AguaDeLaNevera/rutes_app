@@ -1,12 +1,9 @@
-import 'package:plantilla_login_register/providers/provider.dart';
 import 'screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(
-    ChangeNotifierProvider(create: (context) => Information(), child: MyApp()),
-  );
+  runApp(MyApp(),);
 }
 
 class MyApp extends StatelessWidget {
@@ -34,6 +31,6 @@ class MyApp extends StatelessWidget {
           '/': (context) => HomeScreen(),
           'logOrReg': (context) => LoginOrRegisterScreen(),
         },
-        initialRoute: 'logOrReg');
+        initialRoute: '/');
   }
 }
