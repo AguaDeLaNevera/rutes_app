@@ -121,7 +121,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   // You can use the values from controllers and state variables
                   // Update user information and app preferences as needed
                 },
-                child: Text('Save Settings'),
+                child: Text('Log Out'),
               ),
             ],
           ),
