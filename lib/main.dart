@@ -1,3 +1,5 @@
+import 'package:rutes_app/screens/settings_screen.dart';
+
 import 'screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -32,6 +34,7 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (context) => HomeScreen(),
           'logOrReg': (context) => LoginOrRegisterScreen(),
+          'settings': (context) => SettingsScreen(),
         },
         initialRoute: '/');
   }
