@@ -8,11 +8,11 @@ import 'package:rutes_app/providers/user_provider.dart';
 import 'package:rutes_app/screens/route_details_screen.dart';
 
 class RecordScreen extends StatelessWidget {
+  final String? userId;
+  const RecordScreen({super.key, required this.userId});
   @override
   Widget build(BuildContext context) {
     final rutaProvider = Provider.of<RutaProvider>(context);
-    final userProvider = Provider.of<UserProvider>(context);
-    List<User> userList = userProvider.users;
     rutaProvider.getRutas();
     return Scaffold(
       appBar: AppBar(
@@ -34,8 +34,24 @@ class RecordScreen extends StatelessWidget {
                 child: CircularProgressIndicator(),
               );
             } else {
-              List<RouteCard> routeCards =
-                  rutaProvider.getRutasUser(userList[0].id).map((ruta) {
+              List<RouteCard> routeCards;
+              userId != null
+              ? routeCards =
+                  rutaProvider.getRutasUser(userId!).map((ruta) {
+                return RouteCard(
+                  routeName: ruta.nombre,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => RouteDetailsScreen(route: ruta),
+                      ),
+                    );
+                  },
+                );
+              }).toList()
+              :  routeCards =
+                  rutaProvider.rutas.map((ruta) {
                 return RouteCard(
                   routeName: ruta.nombre,
                   onPressed: () {
@@ -48,6 +64,7 @@ class RecordScreen extends StatelessWidget {
                   },
                 );
               }).toList();
+              
 
               return ListView(
                 padding: EdgeInsets.all(16.0),

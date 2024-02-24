@@ -42,15 +42,6 @@ class RouteDetailsScreen extends StatelessWidget {
                   style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
                 SizedBox(height: 16),
-                IconButton(
-                  icon: Icon(
-                    Icons.share,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    // Add logic for sharing the route
-                  },
-                ),
                 // Add more details or content as needed
               ],
             ),

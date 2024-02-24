@@ -24,7 +24,7 @@ class HomeScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => RecordScreen(),
+                  builder: (context) => RecordScreen(userId: userList[0].id),
                 ),
               );
             },
@@ -36,6 +36,18 @@ class HomeScreen extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => SettingsScreen(),
+                ),
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: () {
+              userList = userProvider.getUsers();
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HomeScreen(),
                 ),
               );
             },
@@ -162,7 +174,7 @@ class HomeScreen extends StatelessWidget {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                RecordScreen(),
+                                                RecordScreen(userId: userList[index].id),
                                           ),
                                         );
                                       },
@@ -236,7 +248,12 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-                // Add logic for "Explore New Routes" button
+                Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => RecordScreen(userId: null),
+                ),
+              );
               },
               child: Icon(
                 Icons.search,
