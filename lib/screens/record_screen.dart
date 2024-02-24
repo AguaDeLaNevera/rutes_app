@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rutes_app/models/route_card.dart';
+import 'package:rutes_app/models/ruta.dart';
+import 'package:rutes_app/models/user.dart';
+import 'package:rutes_app/providers/ruta_provider.dart';
+import 'package:rutes_app/providers/user_provider.dart';
 import 'package:rutes_app/screens/route_details_screen.dart';
 
 class RecordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final rutaProvider = Provider.of<RutaProvider>(context);
+    final userProvider = Provider.of<UserProvider>(context);
+    List<User> userList = userProvider.users;
+    rutaProvider.getRutas();
     return Scaffold(
       appBar: AppBar(
         title: Text('Recorded Routes'),
@@ -16,34 +25,24 @@ class RecordScreen extends StatelessWidget {
           image: DecorationImage(
             image: AssetImage('lib/img/mountain.jpg'),
             fit: BoxFit.cover,
-
           ),
         ),
-        child: FutureBuilder(
-          // Replace this with your API fetching logic
-          future: fetchRoutesFromApi(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
+        child: Consumer<RutaProvider>(
+          builder: (context, rutaProvider, child) {
+            if (rutaProvider.rutas.isEmpty) {
               return Center(
                 child: CircularProgressIndicator(),
               );
-            } else if (snapshot.hasError) {
-              return Center(
-                child: Text('Error fetching routes'),
-              );
-            } else if (!snapshot.hasData || (snapshot.data as List).isEmpty) {
-              return Center(
-                child: Text('No routes available'),
-              );
             } else {
-              List<RouteCard> routeCards = (snapshot.data as List).map((route) {
+              List<RouteCard> routeCards =
+                  rutaProvider.getRutasUser(userList[0].id).map((ruta) {
                 return RouteCard(
-                  routeName: route['name'],
+                  routeName: ruta.nombre,
                   onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => RouteDetailsScreen(route: route),
+                        builder: (context) => RouteDetailsScreen(route: ruta),
                       ),
                     );
                   },
@@ -59,20 +58,5 @@ class RecordScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  // Replace this with your API fetching logic
-  Future<List<Map<String, dynamic>>> fetchRoutesFromApi() async {
-    // Simulating API call delay
-    await Future.delayed(Duration(seconds: 2));
-
-    // Replace this with your API data
-    List<Map<String, dynamic>> routes = [
-      {'name': 'Route to Midgard', 'details': 'Details for Route to Midgard'},
-      {'name': 'Another Route', 'details': 'Details for Another Route'},
-      // Add more routes
-    ];
-
-    return routes;
   }
 }

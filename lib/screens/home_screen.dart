@@ -12,6 +12,7 @@ class HomeScreen extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     final userProvider = Provider.of<UserProvider>(context);
     List<User> userList = userProvider.users;
+    bool isMiles = false;
     
     return Scaffold(
       appBar: AppBar(
@@ -120,7 +121,9 @@ class HomeScreen extends StatelessWidget {
                           StatCard(label: 'Routes Created', value: userList[0].stats.routesCreated.toString()),
                           StatCard(label: 'Routes Completed', value: userList[0].stats.routesCompleted.toString()),
                           StatCard(label: 'Likes Received', value: userList[0].stats.likesReceived.toString()),
-                          StatCard(label: 'Total Kilometers', value: userList[0].stats.totalKilometers.toString()),
+                          isMiles == false
+                          ? StatCard(label: 'Total Kilometers', value: userList[0].stats.totalKilometers.toString())
+                          : StatCard(label: 'Total Miles', value: (userList[0].stats.totalKilometers*0.62).toString()),
                         ],
                       ),
                     ),
@@ -148,7 +151,7 @@ class HomeScreen extends StatelessWidget {
                               height: screenHeight * 0.1,
                               child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
-                                itemCount: 10,
+                                itemCount: 5,
                                 itemBuilder: (context, index) {
                                   User user = userList[index];
                                   return Padding(

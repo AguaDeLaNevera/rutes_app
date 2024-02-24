@@ -72,6 +72,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         IconButton(
                           icon: Icon(Icons.edit, color: Colors.white),
                           onPressed: () {
+                            userProvider.updateUserAvatar(userList[0].id, 'https://www.fundacionaquae.org/wp-content/uploads/2020/04/Qu%C3%A9-es-el-agua-3.jpg');
                             // Add logic to handle edit profile picture
                           },
                         ),
@@ -80,10 +81,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Username: John Doe', style: TextStyle(color: Colors.white)),
+                        Text('Username: '+userList[0].username, style: TextStyle(color: Colors.white)),
                         IconButton(
                           icon: Icon(Icons.edit, color: Colors.white),
                           onPressed: () {
+                            userProvider.updateUserUsername(userList[0].id, 'pep sínia');
                             // Add logic to handle edit username
                           },
                         ),

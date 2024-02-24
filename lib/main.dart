@@ -1,3 +1,4 @@
+import 'package:rutes_app/providers/ruta_provider.dart';
 import 'package:rutes_app/providers/user_provider.dart';
 import 'package:rutes_app/screens/settings_screen.dart';
 
@@ -15,7 +16,8 @@ class AppState extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider(create: (_) => UserProvider(), lazy: false,)
+          ChangeNotifierProvider(create: (_) => UserProvider(), lazy: false,),
+          ChangeNotifierProvider(create: (_) => RutaProvider(), lazy: false,),
         ],
         child: MyApp(),
       );

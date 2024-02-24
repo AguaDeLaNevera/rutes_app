@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:rutes_app/models/ruta.dart';
 
 class RouteDetailsScreen extends StatelessWidget {
-  final Map<String, dynamic> route;
+  final Ruta route;
 
   const RouteDetailsScreen({required this.route});
 
@@ -9,7 +10,7 @@ class RouteDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(route['name']),
+        title: Text(route.nombre),
         backgroundColor: Colors.black,
         foregroundColor: Colors.white,
       ),
@@ -33,11 +34,11 @@ class RouteDetailsScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Route Name: ${route['name']}',
+                  'Route Name: ${route.nombre}',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
                 ),
                 Text(
-                  'Details: ${route['details']}',
+                  'Details: ${route.descripcion}',
                   style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
                 SizedBox(height: 16),
