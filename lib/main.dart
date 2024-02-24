@@ -1,3 +1,4 @@
+import 'package:rutes_app/providers/user_provider.dart';
 import 'package:rutes_app/screens/settings_screen.dart';
 
 import 'screens/screens.dart';
@@ -6,10 +7,20 @@ import 'package:provider/provider.dart';
 
 void main() {
   runApp(
-    MyApp(),
+    AppState(),
   );
 }
-
+class AppState extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => UserProvider(), lazy: false,)
+        ],
+        child: MyApp(),
+      );
+  }
+}
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 

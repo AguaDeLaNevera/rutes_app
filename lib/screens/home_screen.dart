@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:rutes_app/models/user.dart';
+import 'package:rutes_app/providers/user_provider.dart';
 import 'package:rutes_app/screens/settings_screen.dart';
 import 'package:rutes_app/screens/record_screen.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
+    final userProvider = Provider.of<UserProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -143,6 +147,7 @@ class HomeScreen extends StatelessWidget {
                                 scrollDirection: Axis.horizontal,
                                 itemCount: 10,
                                 itemBuilder: (context, index) {
+                                  User user = userProvider.users[index];
                                   return Padding(
                                     padding: EdgeInsets.all(screenWidth * 0.005),
                                     child: GestureDetector(
@@ -164,7 +169,7 @@ class HomeScreen extends StatelessWidget {
                                         ),
                                         child: Center(
                                           child: Text(
-                                            'user',
+                                            user.username,
                                             style: TextStyle(
                                               fontSize: screenWidth * 0.042,
                                               color: Colors.black,
