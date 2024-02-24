@@ -47,7 +47,6 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (context) => HomeScreen(),
           'logOrReg': (context) => LoginOrRegisterScreen(),
-          'settings': (context) => SettingsScreen(),
         },
         initialRoute: '/');
   }

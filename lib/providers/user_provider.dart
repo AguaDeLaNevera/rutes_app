@@ -104,4 +104,16 @@ class UserProvider extends ChangeNotifier {
     getUsers();
     notifyListeners();
   }
+  // Function to get a user by ID
+  User getUserById(String id) {
+    return users.firstWhere(
+      (user) => user.id == id,
+      orElse: () => User(
+        id: '',
+        avatar: '',
+        stats: Stats(likesReceived: 0, routesCompleted: 0, routesCreated: 0, totalKilometers: 0),
+        username: '',
+      ),
+    );
+  }
 }

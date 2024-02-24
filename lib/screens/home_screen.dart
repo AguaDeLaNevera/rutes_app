@@ -35,7 +35,7 @@ class HomeScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => SettingsScreen(),
+                  builder: (context) => SettingsScreen(user: userList[0]),
                 ),
               );
             },
@@ -43,7 +43,8 @@ class HomeScreen extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.refresh),
             onPressed: () {
-              userList = userProvider.getUsers();
+              // si no funciona falta userList = userProvider.getUsers();
+              userProvider.getUsers();
               Navigator.push(
                 context,
                 MaterialPageRoute(

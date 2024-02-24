@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:rutes_app/models/user.dart';
 import 'package:rutes_app/providers/user_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:rutes_app/screens/home_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
+  final User user;
+  const SettingsScreen({Key? key, required this.user}) : super(key: key);
   @override
   _SettingsScreenState createState() => _SettingsScreenState();
 }
+
 
 class _SettingsScreenState extends State<SettingsScreen> {
   TextEditingController nameController = TextEditingController();
@@ -14,17 +18,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool darkMode = false;
   int distanceUnit = 0; // 0 for kilometers, 1 for miles
   int speedUnit = 0; // 0 for km/h, 1 for mph
-  
 
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
-    List<User> userList = userProvider.users;
     return Scaffold(
       appBar: AppBar(
         title: Text('Settings'),
         backgroundColor: Colors.black,
         foregroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            // Navigate to HomeScreen when back arrow is pressed
+           Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HomeScreen(),
+                ),
+              );
+          },
+        ),
       ),
       body: Stack(
         children: [
@@ -65,15 +79,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       children: [
                         CircleAvatar(
                           radius: 60, // Increased the radius to make the image bigger
-                          backgroundImage: userList[0].avatar != null && userList[0].avatar.isNotEmpty
-                            ? NetworkImage(userList[0].avatar) as ImageProvider<Object>
+                          backgroundImage: widget.user.avatar != null && widget.user.avatar.isNotEmpty
+                            ? NetworkImage(widget.user.avatar) as ImageProvider<Object>
                             : AssetImage('lib/img/hike.jpg'),
                         ),
                         IconButton(
                           icon: Icon(Icons.edit, color: Colors.white),
                           onPressed: () {
-                            userProvider.updateUserAvatar(userList[0].id, 'https://www.fundacionaquae.org/wp-content/uploads/2020/04/Qu%C3%A9-es-el-agua-3.jpg');
-                            // Add logic to handle edit profile picture
+                            _editProfileAvatar(userProvider, widget.user.id);
                           },
                         ),
                       ],
@@ -81,11 +94,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Username: '+userList[0].username, style: TextStyle(color: Colors.white)),
+                        Text('Username: '+widget.user.username, style: TextStyle(color: Colors.white)),
                         IconButton(
                           icon: Icon(Icons.edit, color: Colors.white),
                           onPressed: () {
-                            userProvider.updateUserUsername(userList[0].id, 'pep sínia');
+                            _editProfileUsername(userProvider, widget.user.id);
                             // Add logic to handle edit username
                           },
                         ),
@@ -243,4 +256,146 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
     );
   }
+void _editProfileUsername(UserProvider upv, String id) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Edit Profile', style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.black.withOpacity(1),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: nameController,
+              style: TextStyle(color: Colors.white), // Set text color to white
+              decoration: InputDecoration(
+                labelText: 'Username',
+                labelStyle: TextStyle(color: Colors.white),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                ),
+              ),
+            ),
+            SizedBox(height: 10),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text('Cancel', style: TextStyle(color: Colors.white)),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              // Show CircularProgressIndicator while saving
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    backgroundColor: Colors.transparent,
+                    elevation: 0,
+                    content: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                },
+              );
+
+              String newUsername = nameController.text;
+              await upv.updateUserUsername(id, newUsername);
+              await Future.delayed(Duration(seconds: 1));
+              Navigator.pop(context); // Close the CircularProgressIndicator dialog
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SettingsScreen(user: upv.getUserById(id)),
+                ),
+              );
+            },
+            child: Text('Save'),
+          ),
+        ],
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        contentPadding: EdgeInsets.all(16.0),
+      );
+    },
+  );
+}
+
+void _editProfileAvatar(UserProvider upv, String id) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Edit Profile', style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.black.withOpacity(1),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: nameController,
+              style: TextStyle(color: Colors.white), // Set text color to white
+              decoration: InputDecoration(
+                labelText: 'Avatar',
+                labelStyle: TextStyle(color: Colors.white),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                ),
+              ),
+            ),
+            SizedBox(height: 10),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text('Cancel', style: TextStyle(color: Colors.white)),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              // Show CircularProgressIndicator while saving
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    backgroundColor: Colors.transparent,
+                    elevation: 0,
+                    content: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                },
+              );
+
+              String newUsername = nameController.text;
+              await upv.updateUserAvatar(id, newUsername);
+              await Future.delayed(Duration(seconds: 1));
+              Navigator.pop(context); // Close the CircularProgressIndicator dialog
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SettingsScreen(user: upv.getUserById(id)),
+                ),
+              );
+            },
+            child: Text('Save'),
+          ),
+        ],
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        contentPadding: EdgeInsets.all(16.0),
+      );
+    },
+  );
+}
+
 }
