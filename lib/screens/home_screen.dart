@@ -5,6 +5,9 @@ import 'package:rutes_app/screens/record_screen.dart';
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Hiking'),
@@ -36,31 +39,33 @@ class HomeScreen extends StatelessWidget {
         foregroundColor: Colors.white,
       ),
       body: Container(
-        width: double.infinity,
-        height: double.infinity,
+        width: screenWidth,
+        height: screenHeight,
         child: Stack(
           fit: StackFit.expand,
           children: [
             Image.asset(
               'lib/img/mountain.jpg',
               fit: BoxFit.cover,
+              width: screenWidth,
+              height: screenHeight,
             ),
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(screenWidth * 0.04),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CircleAvatar(
-                    radius: 40, // Increase the radius for bigger circles
+                    radius: screenWidth * 0.1,
                     backgroundImage: AssetImage('lib/img/hike.jpg'),
                   ),
-                  SizedBox(height: 4),
+                  SizedBox(height: screenHeight * 0.01),
                   Expanded(
                     child: Container(
-                      padding: EdgeInsets.all(10),
+                      padding: EdgeInsets.all(screenWidth * 0.02),
                       decoration: BoxDecoration(
                         color: Colors.black.withOpacity(0.7),
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(screenWidth * 0.02),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,16 +73,16 @@ class HomeScreen extends StatelessWidget {
                           Text(
                             'Welcome Hiker!',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: screenWidth * 0.04,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                             ),
                           ),
-                          SizedBox(height: 8),
+                          SizedBox(height: screenHeight * 0.008),
                           Text(
                             'Embark on a journey through nature and discover the thrill of hiking. Your next adventure awaits!',
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: screenWidth * 0.043,
                               color: Colors.white,
                             ),
                           ),
@@ -85,13 +90,13 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 4),
+                  SizedBox(height: screenHeight * 0.01),
                   Expanded(
                     child: Container(
-                      padding: EdgeInsets.all(10),
+                      padding: EdgeInsets.all(screenWidth * 0.02),
                       decoration: BoxDecoration(
                         color: Colors.black.withOpacity(0.7),
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(screenWidth * 0.02),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -99,12 +104,12 @@ class HomeScreen extends StatelessWidget {
                           Text(
                             'Stats:',
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: screenWidth * 0.0435,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                             ),
                           ),
-                          SizedBox(height: 8),
+                          SizedBox(height: screenHeight * 0.008),
                           StatCard(label: 'Routes Created', value: '10'),
                           StatCard(label: 'Routes Completed', value: '5'),
                           StatCard(label: 'Likes Received', value: '20'),
@@ -113,13 +118,13 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 4),
+                  SizedBox(height: screenHeight * 0.01),
                   Expanded(
                     child: Container(
-                      padding: EdgeInsets.all(10),
+                      padding: EdgeInsets.all(screenWidth * 0.02),
                       decoration: BoxDecoration(
                         color: Colors.black.withOpacity(0.7),
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(screenWidth * 0.02),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,20 +132,19 @@ class HomeScreen extends StatelessWidget {
                           Text(
                             'You might wanna see what these people are up to!',
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: screenWidth * 0.043,
                               color: Colors.white,
                             ),
                           ),
                           Center(
-                            // Center the contents horizontally
                             child: Container(
-                              height: 100,
+                              height: screenHeight * 0.1,
                               child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
                                 itemCount: 10,
                                 itemBuilder: (context, index) {
                                   return Padding(
-                                    padding: EdgeInsets.all(2.0),
+                                    padding: EdgeInsets.all(screenWidth * 0.005),
                                     child: GestureDetector(
                                       onTap: () {
                                         Navigator.push(
@@ -152,8 +156,8 @@ class HomeScreen extends StatelessWidget {
                                         );
                                       },
                                       child: Container(
-                                        width: 60,
-                                        height: 60,
+                                        width: screenWidth * 0.212,
+                                        height: screenWidth * 0.12,
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           color: Colors.white,
@@ -162,7 +166,7 @@ class HomeScreen extends StatelessWidget {
                                           child: Text(
                                             'user',
                                             style: TextStyle(
-                                              fontSize: 12,
+                                              fontSize: screenWidth * 0.042,
                                               color: Colors.black,
                                             ),
                                           ),
@@ -186,17 +190,18 @@ class HomeScreen extends StatelessWidget {
       ),
       backgroundColor: Colors.black,
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: EdgeInsets.all(screenWidth * 0.05),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.black,
-                backgroundColor: Colors.white, // Change the background color
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+                backgroundColor: Colors.white,
+                padding: EdgeInsets.symmetric(
+                    horizontal: screenWidth * 0.1, vertical: screenHeight * 0.02),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(screenWidth * 0.04),
                 ),
               ),
               onPressed: () {
@@ -204,16 +209,17 @@ class HomeScreen extends StatelessWidget {
               },
               child: Icon(
                 Icons.add,
-                size: 24,
+                size: screenWidth * 0.06,
               ),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.black,
-                backgroundColor: Colors.white, // Change the background color
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+                backgroundColor: Colors.white,
+                padding: EdgeInsets.symmetric(
+                    horizontal: screenWidth * 0.1, vertical: screenHeight * 0.02),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(screenWidth * 0.04),
                 ),
               ),
               onPressed: () {
@@ -221,7 +227,7 @@ class HomeScreen extends StatelessWidget {
               },
               child: Icon(
                 Icons.search,
-                size: 24,
+                size: screenWidth * 0.06,
               ),
             ),
           ],
@@ -244,11 +250,11 @@ class StatCard extends StatelessWidget {
       children: [
         Text(
           label,
-          style: TextStyle(fontSize: 14, color: Colors.white),
+          style: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.04325, color: Colors.white),
         ),
         Text(
           value,
-          style: TextStyle(fontSize: 14, color: Colors.white),
+          style: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.04325, color: Colors.white),
         ),
       ],
     );
