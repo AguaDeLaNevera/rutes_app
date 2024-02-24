@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:rutes_app/models/user.dart';
+import 'package:rutes_app/providers/user_provider.dart';
+import 'package:provider/provider.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -11,9 +14,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool darkMode = false;
   int distanceUnit = 0; // 0 for kilometers, 1 for miles
   int speedUnit = 0; // 0 for km/h, 1 for mph
+  
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
+    List<User> userList = userProvider.users;
     return Scaffold(
       appBar: AppBar(
         title: Text('Settings'),
@@ -59,7 +65,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       children: [
                         CircleAvatar(
                           radius: 60, // Increased the radius to make the image bigger
-                          backgroundImage: AssetImage('lib/img/hike.jpg'),
+                          backgroundImage: userList[0].avatar != null && userList[0].avatar.isNotEmpty
+                            ? NetworkImage(userList[0].avatar) as ImageProvider<Object>
+                            : AssetImage('lib/img/hike.jpg'),
                         ),
                         IconButton(
                           icon: Icon(Icons.edit, color: Colors.white),
@@ -135,17 +143,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             onChanged: (value) {
                               setState(() {
                                 enableTracking = value;
-                              });
-                            },
-                            activeColor: Colors.black, // Set the active color to black
-                          ),
-                          SwitchListTile(
-                            title: Text('Dark Mode', style: TextStyle(color: Colors.black)),
-                            value: darkMode,
-                            onChanged: (value) {
-                              setState(() {
-                                darkMode = value;
-                                // You can implement logic to change the app's theme here
                               });
                             },
                             activeColor: Colors.black, // Set the active color to black

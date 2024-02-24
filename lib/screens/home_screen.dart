@@ -11,7 +11,8 @@ class HomeScreen extends StatelessWidget {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     final userProvider = Provider.of<UserProvider>(context);
-
+    List<User> userList = userProvider.users;
+    
     return Scaffold(
       appBar: AppBar(
         title: Text('Hiking'),
@@ -61,7 +62,9 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: screenWidth * 0.1,
-                    backgroundImage: AssetImage('lib/img/hike.jpg'),
+                    backgroundImage: userList[0].avatar != null && userList[0].avatar.isNotEmpty
+                        ? NetworkImage(userList[0].avatar) as ImageProvider<Object>
+                        : AssetImage('lib/img/hike.jpg'),
                   ),
                   SizedBox(height: screenHeight * 0.01),
                   Expanded(
@@ -114,10 +117,10 @@ class HomeScreen extends StatelessWidget {
                             ),
                           ),
                           SizedBox(height: screenHeight * 0.008),
-                          StatCard(label: 'Routes Created', value: '10'),
-                          StatCard(label: 'Routes Completed', value: '5'),
-                          StatCard(label: 'Likes Received', value: '20'),
-                          StatCard(label: 'Total Kilometers', value: '50'),
+                          StatCard(label: 'Routes Created', value: userList[0].stats.routesCreated.toString()),
+                          StatCard(label: 'Routes Completed', value: userList[0].stats.routesCompleted.toString()),
+                          StatCard(label: 'Likes Received', value: userList[0].stats.likesReceived.toString()),
+                          StatCard(label: 'Total Kilometers', value: userList[0].stats.totalKilometers.toString()),
                         ],
                       ),
                     ),
@@ -147,7 +150,7 @@ class HomeScreen extends StatelessWidget {
                                 scrollDirection: Axis.horizontal,
                                 itemCount: 10,
                                 itemBuilder: (context, index) {
-                                  User user = userProvider.users[index];
+                                  User user = userList[index];
                                   return Padding(
                                     padding: EdgeInsets.all(screenWidth * 0.005),
                                     child: GestureDetector(
@@ -167,14 +170,16 @@ class HomeScreen extends StatelessWidget {
                                           shape: BoxShape.circle,
                                           color: Colors.white,
                                         ),
-                                        child: Center(
-                                          child: Text(
-                                            user.username,
-                                            style: TextStyle(
-                                              fontSize: screenWidth * 0.042,
-                                              color: Colors.black,
-                                            ),
-                                          ),
+                                        child: ClipOval(
+                                        child: user.avatar != null && user.avatar.isNotEmpty
+                                            ? Image.network(
+                                                user.avatar,
+                                                fit: BoxFit.cover,
+                                              )
+                                            : Image.asset(
+                                                'lib/img/hike.jpg',
+                                                fit: BoxFit.cover,
+                                              ),
                                         ),
                                       ),
                                     ),

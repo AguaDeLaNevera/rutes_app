@@ -26,7 +26,7 @@ class UserProvider extends ChangeNotifier {
         users = jsonResponse.entries.map((entry) {
           return User.fromJson({'id': entry.key, ...entry.value});
         }).toList();
-
+        
         notifyListeners();
       } else {
         throw Exception('Failed to load users');
